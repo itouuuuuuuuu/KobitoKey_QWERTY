@@ -1,6 +1,5 @@
 #include <input/processors.dtsi>
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
 
@@ -32,6 +31,7 @@
         compatible = "zmk,combos";
 
         /* LANG2 キー + Backspace キーの同時押しで LANG1 (moNa2 の 33 + 39 に相当) */
+
         lang1 {
             bindings = <&kp LANGUAGE_1>;
             key-positions = <30 36>;
@@ -86,10 +86,10 @@
         default_layer {
             display-name = "DEFAULT";
             bindings = <
-&lt 8 Q                &kp W                    &kp E                     &kp R  &kp T        &kp Y                      &kp U                 &kp I                 &kp O                 &kp P
-&mt_slow LEFT_SHIFT A  &kp S                    &kp D                     &kp F  &kp G        &kp H                      &kp J                 &kp K                 &kp L                 &kp MINUS
-&kp Z                  &mt_slow LS(LEFT_ALT) X  &mt_slow LS(LEFT_META) C  &kp V  &kp B        &kp N                      &kp M                 &mt RIGHT_META COMMA  &mt RIGHT_ALT PERIOD  &mt_fast RCTRL SLASH
-&lt 7 LANG2            &mo 6                    &mo 3                     &mo 1  &lt 2 SPACE  &lt_to_layer_0 5 TAB       &mt RIGHT_SHIFT BACKSPACE  &mt RIGHT_META ENTER  &kp LG(PLUS)     &kp ESCAPE
+&lt 8 Q                &kp W                    &kp E                     &kp R        &kp T                 &kp Y                     &kp U                   &kp I                 &kp O                 &kp P
+&mt_slow LEFT_SHIFT A  &kp S                    &kp D                     &kp F        &kp G                 &kp H                     &kp J                   &kp K                 &kp L                 &kp MINUS
+&kp Z                  &mt_slow LS(LEFT_ALT) X  &mt_slow LS(LEFT_META) C  &kp V        &kp B                 &kp N                     &kp M                   &mt RIGHT_META COMMA  &mt RIGHT_ALT PERIOD  &mt_fast RCTRL SLASH
+&lt 7 LANG2            &mo 6                    &mo 1                     &lt 2 SPACE  &lt_to_layer_0 5 TAB  &mt LEFT_SHIFT BACKSPACE  &mt LEFT_COMMAND ENTER  &mo 3                 &kp LG(PLUS)          &kp ESCAPE
             >;
         };
 
@@ -124,6 +124,7 @@
         };
 
         /* 右トラックボールのオートマウスレイヤー (KobitoKey_left.overlay の &zip_temp_layer 4 ...) */
+
         layer_4_mouse_layer {
             display-name = "MOUSE";
             bindings = <
@@ -135,13 +136,14 @@
         };
 
         /* moNa2 ではトラックボールがスクロールになるレイヤー。KobitoKey は左ボールが常時スクロールなのでテンキーのみ */
+
         layer_5_num {
             display-name = "NUM";
             bindings = <
-&trans  &trans                &trans         &trans  &trans  &trans  &kp N7  &kp N8  &kp N9  &trans
-&trans  &kp LS(LG(NUMBER_4))  &trans         &trans  &trans  &trans  &kp N4  &kp N5  &kp N6  &trans
-&trans  &trans                &kp LS(LC(C))  &trans  &trans  &trans  &kp N1  &kp N2  &kp N3  &trans
-&trans  &trans                &trans         &trans  &trans  &trans  &trans  &kp N0  &trans  &trans
+&trans  &trans                &trans         &trans  &trans  &trans  &kp N7        &kp N8  &kp N9  &trans
+&trans  &kp LS(LG(NUMBER_4))  &trans         &trans  &trans  &trans  &kp N4        &kp N5  &kp N6  &trans
+&trans  &trans                &kp LS(LC(C))  &trans  &trans  &trans  &kp N1        &kp N2  &kp N3  &trans
+&trans  &trans                &trans         &trans  &trans  &trans  &kp NUMBER_0  &trans  &trans  &trans
             >;
         };
 
@@ -161,18 +163,19 @@
 &trans  &trans  &trans  &trans  &trans  &trans  &kp LG(NUMBER_7)  &kp LG(NUMBER_8)  &kp LG(NUMBER_9)  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &kp LG(NUMBER_4)  &kp LG(NUMBER_5)  &kp LG(NUMBER_6)  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &kp LG(NUMBER_1)  &kp LG(NUMBER_2)  &kp LG(NUMBER_3)  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans            &kp LG(NUMBER_0)  &trans            &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &kp LG(NUMBER_0)  &trans            &trans            &trans
             >;
         };
 
         /* Q 長押しで入る。W の位置に &studio_unlock (ZMK Studio のアンロック) */
+
         layer_8_move_window {
             display-name = "WIN_MGMT";
             bindings = <
 &trans  &studio_unlock  &trans  &trans         &trans  &kp LS(LC(Y))          &trans             &trans         &kp LS(LC(O))    &kp LS(LC(P))
 &trans  &trans          &trans  &kp LS(LC(F))  &trans  &kp LS(LC(H))          &kp LS(LC(J))      &kp LS(LC(K))  &kp LC(LS(L))    &trans
 &trans  &trans          &trans  &trans         &trans  &kp LS(LC(N))          &trans             &trans         &kp LS(LC(DOT))  &trans
-&trans  &trans          &trans  &trans         &trans  &trans                 &kp LS(LC(BACKSPACE))  &kp LS(LC(ENTER))  &trans       &trans
+&trans  &trans          &trans  &trans         &trans  &kp LS(LC(BACKSPACE))  &kp LS(LC(ENTER))  &trans         &trans           &trans
             >;
         };
     };
