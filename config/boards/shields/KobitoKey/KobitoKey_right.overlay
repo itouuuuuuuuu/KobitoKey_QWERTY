@@ -29,20 +29,15 @@
 
     tb_right: trackball@0 {
         status = "okay";
-        compatible = "pixart,pmw3610";
+        compatible = "pixart,paw3222";
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <600>;
-        
-        evt-type = <INPUT_EV_REL>;
-        x-input-code = <INPUT_REL_X>;
-        y-input-code = <INPUT_REL_Y>;
+        res-cpi = <760>;
     };
 };
 
+/* 向きの調整は central 側 (KobitoKey_left.overlay の &tb_right_listener) で行う */
 &tb_right_split {
     device = <&tb_right>;
-
-    input-processors = <&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>;
 };

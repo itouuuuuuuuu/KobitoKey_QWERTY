@@ -1,6 +1,7 @@
 # CLAUDE.md
 
 KobitoKey (40 キー分割型、左右にトラックボール) 用の ZMK ファームウェア設定リポジトリ。
+対象は **XIAO nRF52840 Plus 版** の基板 (fork 元の設定は旧版向けで、3 行目・4 列目のピンとトラックボールのセンサーが違う)。
 元は fork だが、itouuuuuuuuu/KobitoKey_QWERTY として独立運用している。
 キーマップは zmk-config-moNa2-v2 (ローカルの ../zmk-config-moNa2-v2) と同じものを移植している。
 
@@ -21,7 +22,7 @@ build.yaml                                 GitHub Actions のビルドマトリ�
 config/
   KobitoKey.keymap                         キーマップ本体 (レイヤー 0〜8)
   KobitoKey.json                           ZMK Studio 用の物理レイアウト定義
-  west.yml                                 ZMK v0.3 と各モジュール (PMW3610 / sensor_rotation / rgbled-widget)
+  west.yml                                 ZMK v0.3 と各モジュール (PAW3222 / sensor_rotation / rgbled-widget)
   boards/shields/KobitoKey/
     kobitokey.dtsi                         左右共通の devicetree (kscan、matrix transform、input listener)
     KobitoKey_left.overlay                 左手 (central): 左ボール (常時スクロール)、右ボールのオートマウスレイヤー設定
@@ -31,6 +32,23 @@ config/
   settings.json                            PreToolUse hook の登録
   hooks/block-upstream.sh                  fork 元への操作をブロックする hook
 ```
+
+## ハードウェア (XIAO Plus 版)
+
+fork 元 `KobitoKey_QWERTY` の設定は旧版基板向けで、この個体では R 列と ZXCVB 行が反応せず、トラックボールも動かなかった (2026-10-26 に実機で確認)。
+販売者の XIAO Plus 版リポジトリ `KobitoKey_xiao_plus` の定義に合わせて次を変更している。
+
+| 項目 | fork 元 | このリポジトリ |
+|---|---|---|
+| 行 (row-gpios) | D1, D2, D3, D6 | D1, D2, **P1.01**, D3 |
+| 列 (col-gpios) | D10, D9, D8, D7, P0.10 | D10, D9, D8, **P1.03**, D7 |
+| トラックボール | PMW3610 (badjeff) | **PAW3222** (sekigon-gonnoc、moNa2 と同じ) `res-cpi = <760>` |
+| 右ボールの向き | peripheral 側で Y 反転 | central 側で XY 入替 + X 反転 |
+| 左ボールの向き | スクロール変換後に XY 反転 | XY 入替 + XY 反転、スケール 1/20・1/12 |
+
+P1.01 / P1.03 は XIAO Plus 底面の追加パッド。SPI (P0.04 / P0.05)、CS (P0.09)、IRQ (P0.02) は旧版と同じ。
+ピンの疑いがあるときは、全キーに別の文字を割り当てた診断 keymap (レイヤー・combo 無し) を焼いて
+「どの物理キーがどの文字を出すか」を表にすると、行・列のずれがそのまま読める。
 
 ## キーマップ (config/KobitoKey.keymap)
 

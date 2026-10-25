@@ -33,16 +33,11 @@
 
     tb_left: trackball@0 {
         status = "okay";
-        compatible = "pixart,pmw3610";
+        compatible = "pixart,paw3222";
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio0 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        cpi = <200>; /* センサー感度 */
-
-
-        evt-type = <INPUT_EV_REL>;
-        x-input-code = <INPUT_REL_X>;
-        y-input-code = <INPUT_REL_Y>;
+        res-cpi = <760>;
     };
 };
 
@@ -66,13 +61,14 @@
     status = "okay";
     device = <&tb_left>;
 
+    /* 左ボールは常時スクロール。向きは XIAO Plus 版の販売者構成に合わせる (XY 入替 + XY 反転) */
     input-processors =
             <&sensor_rotation_left>,
-            <&zip_x_scaler 0 1>,
-            <&zip_y_scaler 1 15>,
-            <&zip_xy_to_scroll_mapper>,
-            <&zip_scroll_transform INPUT_TRANSFORM_Y_INVERT>,
-            <&zip_scroll_transform INPUT_TRANSFORM_X_INVERT>;
+            <&zip_xy_swap_mapper>,
+            <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>,
+            <&zip_x_scaler 1 20>,
+            <&zip_y_scaler 1 12>,
+            <&zip_xy_to_scroll_mapper>;
     };
 
 / {
@@ -86,8 +82,11 @@
 &tb_right_listener {
     status = "okay";
 
+    /* 右ボールはカーソル。向きは XIAO Plus 版の販売者構成に合わせる (XY 入替 + X 反転) */
     input-processors =
         <&sensor_rotation_right>,
+        <&zip_xy_swap_mapper>,
+        <&zip_xy_transform INPUT_TRANSFORM_X_INVERT>,
         <&zip_temp_layer 4 5000>; /* オートマウスレイヤーの指定とトラボ操作及びマウスボタン押下後に滞留する時間 */
 };
 
